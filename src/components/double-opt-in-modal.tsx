@@ -12,11 +12,6 @@ export const DoubleOptInModal: FunctionComponent<Props> = ({
 }) => {
   if (!isOpen) return null
 
-  const optInNumber = '+12345678901'
-  const message = encodeURIComponent(
-    'Fat Squirrel: Reply Y to subscribe to get 20% off. Reply HELP for help and STOP to cancel. Msg frequency varies. Msg & data rates may apply. View Terms & Privacy: https://fatsquirrel.ostc.tv/12i3sf'
-  )
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl flex overflow-hidden">
@@ -91,16 +86,19 @@ export const DoubleOptInModal: FunctionComponent<Props> = ({
                   id="phone"
                   name="phone"
                   pattern="^\+[1-9]\d{1,14}$"
-                  className="flex-grow block px-3 py-2 border border-gray-300 rounded-r-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="flex-grow text-black block px-3 py-2 border border-gray-300 rounded-r-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   placeholder="Your Phone Number"
                 />
               </div>
             </div>
 
-            <button className="cursor-pointer w-full bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4">
-              <a href={`sms://${optInNumber}?body=${message}`}>
-                Get 20% off now
-              </a>
+            <button
+              onClick={() => {
+                console.log('Create subscription on OneSignal')
+              }}
+              className="cursor-pointer w-full bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4"
+            >
+              Get 20% off now
             </button>
 
             <button
