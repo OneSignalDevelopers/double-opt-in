@@ -1,101 +1,195 @@
-import Image from "next/image";
+'use client'
+
+import { FormEvent, useState } from 'react'
+import { OneSignalAppID } from '@/core/constants'
+import { safeTry } from '@/core/utils'
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    country: 'US',
+  })
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const [formOptions, setFormOptions] = useState({
+    wants_marketing: true,
+    wants_promotions: true,
+  })
+
+  const handleChange = e => {
+    const { name, value } = e.target
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }))
+  }
+
+  const handleOptionChange = e => {
+    const { name } = e.target
+    setFormOptions(prevData => ({
+      ...prevData,
+      [name]: !formOptions[name],
+    }))
+  }
+
+  return (
+    <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md border border-gray-200">
+      <h1 className="text-2xl font-semibold text-[#051B2C] mb-2">Sign Up</h1>
+      <p className="text-[#424D57] mb-6">Sign up for our amazing product</p>
+
+      <form className="space-y-4" onSubmit={submitForm}>
+        <div>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-[#424D57]"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            placeholder="Your Name"
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-[#424D57]"
+          >
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            placeholder="Your Email"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+        </div>
+
+        <div>
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-[#424D57]"
+          >
+            Phone Number
+          </label>
+          <div className="flex mt-1">
+            <select
+              name="country_code"
+              className="border text-black border-gray-300 rounded-l-md text-sm p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            >
+              <option value="CA">🇨🇦 +1</option>
+              <option value="MX">🇲🇽 +52</option>
+              <option value="US">🇺🇸 +1</option>
+            </select>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="block w-full text-black px-3 py-2 border border-gray-300 rounded-r-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              placeholder="Your Phone Number"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-start">
+          <input
+            type="checkbox"
+            id="marketing"
+            name="wants_marketing"
+            onChange={handleOptionChange}
+            checked={formOptions.wants_marketing}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <label htmlFor="marketing" className="ml-2 text-sm text-[#424D57]">
+            I agree to receive marketing emails
+          </label>
+        </div>
+
+        <div className="flex items-start">
+          <input
+            type="checkbox"
+            id="promotions"
+            name="wants_promotions"
+            onChange={handleOptionChange}
+            checked={formOptions.wants_promotions}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <label htmlFor="promotions" className="ml-2 text-sm text-[#424D57]">
+            I agree to receive automated promotional messages from [Company
+            Name]. This agreement is not a condition of purchase. Message
+            frequency varies. Reply STOP to opt out or HELP for help. Message &
+            data rates apply. Terms and privacy policy found at{' '}
+            <a href="#" className="text-blue-500 underline">
+              company.com/terms
+            </a>
+            .
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Sign Up
+        </button>
+      </form>
     </div>
-  );
+  )
+
+  async function submitForm(event: FormEvent) {
+    event.preventDefault()
+    const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
+    const subscriptionsToCreate: Array<{
+      type: string
+      token: string
+      enabled: boolean
+    }> = []
+    formData.email &&
+      subscriptionsToCreate.push({
+        type: 'Email',
+        token: formData.email,
+        enabled: true,
+      })
+    formData.phone &&
+      subscriptionsToCreate.push({
+        type: 'SMS',
+        token: formData.phone,
+        enabled: true,
+      })
+    const [error, _result] = await safeTry(() =>
+      fetch(createUserAPI, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({
+          properties: {
+            country: formData.country,
+            tags: {
+              name: formData.name,
+              wantsMarketing: `${formOptions.wants_marketing}`,
+              wantsPromotions: `${formOptions.wants_promotions}`,
+            },
+          },
+          subscriptions: subscriptionsToCreate,
+        }),
+      })
+    )
+
+    if (error) {
+      console.error('Failed to create user')
+    } else {
+      console.log('User created successfully')
+    }
+  }
 }
