@@ -11,7 +11,6 @@ export default function MenuPage() {
   const [dobleOptinModalOpen, setDobleOptinModalOpen] = useState(false)
 
   return (
-    <div className="flex flex-col">
     <div>
       <div className="flex flex-col text-black mb-10">
         <img
