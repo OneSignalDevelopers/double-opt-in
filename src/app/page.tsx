@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { DoubleOptInModal } from '../components/double-opt-in-modal'
 import { TextToSubscribeModal } from '../components//text-to-subscribe-modal'
 
-export default function HomePage() {
+export default function MenuPage() {
   const [textToSubscribeModalOpen, setTextToSubscribeModalOpen] =
     useState(false)
   const [dobleOptinModalOpen, setDobleOptinModalOpen] = useState(false)
@@ -41,6 +41,13 @@ export default function HomePage() {
         isOpen={dobleOptinModalOpen}
         onClose={() => setDobleOptinModalOpen(false)}
       />
+
+      <Link
+        className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
+        href="/text-opt-in"
+      >
+        Text to subscribe
+      </Link>
     </div>
   )
 }
