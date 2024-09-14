@@ -6,7 +6,7 @@ interface Props {
   readonly onClose: () => void
 }
 
-export const DoubleOptInModal: FunctionComponent<Props> = ({
+export const DoubleOptInSMSModal: FunctionComponent<Props> = ({
   isOpen,
   onClose,
 }) => {
