@@ -4,6 +4,11 @@ import { FormEvent, useState } from 'react'
 import { OneSignalAppID } from '@/core/constants'
 import { safeTry } from '@/core/utils'
 
+const COUNTRY_CODE: Record<string, string> = {
+  "CA": "+1",
+  "MX": "+52",
+  "US": "+1",
+}
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -167,7 +172,7 @@ export default function SignUpPage() {
     formData.phone &&
       subscriptionsToCreate.push({
         type: 'SMS',
-        token: formData.phone,
+        token: COUNTRY_CODE[formData.country] + formData.phone,
         enabled: true,
       })
     const [error, _result] = await safeTry(() =>
