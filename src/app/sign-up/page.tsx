@@ -3,6 +3,8 @@
 import { FormEvent, useState } from 'react'
 import { OneSignalAppID } from '@/core/constants'
 import { safeTry } from '@/core/utils'
+import { useSearchParams } from 'next/navigation'
+
 
 const COUNTRY_CODE: Record<string, string> = {
   "CA": "+1",
@@ -10,6 +12,8 @@ const COUNTRY_CODE: Record<string, string> = {
   "US": "+1",
 }
 export default function SignUpPage() {
+  const searchParams = useSearchParams()
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -156,8 +160,9 @@ export default function SignUpPage() {
 
   async function submitForm(event: FormEvent) {
     event.preventDefault()
-
-    const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
+    // Use the app_id query parameter if it exists, otherwise use the default OneSignalAppID
+    const appId = searchParams.get('app_id') || OneSignalAppID
+    const createUserAPI = `https://api.onesignal.com/apps/${appId}/users`
     const subscriptionsToCreate: Array<{
       type: string
       token: string
