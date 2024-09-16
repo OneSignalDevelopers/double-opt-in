@@ -21,7 +21,7 @@ export default function SignUpPage() {
     wants_promotions: true,
   })
 
-  const handleChange = e => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prevData => ({
       ...prevData,
@@ -29,11 +29,11 @@ export default function SignUpPage() {
     }))
   }
 
-  const handleOptionChange = e => {
+  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target
     setFormOptions(prevData => ({
       ...prevData,
-      [name]: !formOptions[name],
+      [name]: !prevData[name as keyof typeof formOptions],
     }))
   }
 
@@ -175,7 +175,7 @@ export default function SignUpPage() {
         token: formData.phone,
         enabled: true,
       })
-    const [error, _result] = await safeTry(() =>
+    const [error] = await safeTry(() =>
       fetch(createUserAPI, {
         method: 'POST',
         mode: 'no-cors',

@@ -1,16 +1,18 @@
-export const safeTry = async fn => {
+type AsyncFunction<T> = () => Promise<T>;
+
+export const safeTry = async <T>(fn: AsyncFunction<T>): Promise<[Error | null, T | null]> => {
   try {
-    const result = await fn()
-    return [null, result]
+    const result = await fn();
+    return [null, result];
   } catch (e) {
     if (e instanceof Error) {
-      console.error(e.message)
+      console.error(e.message);
     } else if (typeof e === 'string') {
-      console.error(e)
+      console.error(e);
     } else {
-      console.error('An error occurred')
+      console.error('An error occurred');
     }
 
-    return [e, null]
+    return [e as Error, null];
   }
-}
+};
