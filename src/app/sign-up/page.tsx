@@ -5,6 +5,13 @@ import { OneSignalAppID } from '@/core/constants'
 import { safeTry } from '@/core/utils'
 import { useSearchParams } from 'next/navigation'
 
+
+const COUNTRY_CODE: Record<string, string> = {
+  "CA": "+1",
+  "MX": "+52",
+  "US": "+1",
+}
+
 export default function SignUpPage() {
   return (
     <div>
@@ -181,7 +188,7 @@ function SignUpForm() {
     formData.phone &&
       subscriptionsToCreate.push({
         type: 'SMS',
-        token: formData.phone,
+        token: COUNTRY_CODE[formData.country] + formData.phone,
         enabled: true,
       })
     const [error] = await safeTry(() =>
