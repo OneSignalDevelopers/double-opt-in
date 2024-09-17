@@ -1,11 +1,21 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, Suspense } from 'react'
 import { CountryCodesOptions, OneSignalAppID } from '@core/constants'
 import { safeTry } from '@core/utils'
 import { useSearchParams } from 'next/navigation'
 
 export default function SignUpPage() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <SignUpForm />
+      </Suspense>
+    </div>
+  );
+};
+
+function SignUpForm() {
   const searchParams = useSearchParams()
   const [formData, setFormData] = useState({
     name: '',
