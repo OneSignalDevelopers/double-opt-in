@@ -2,13 +2,19 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { DoubleOptInSMSModal } from '../components/double-opt-in-sms'
-import { TextToSubscribeModal } from '../components//text-to-subscribe-modal'
+import { PromotionalDoubleOptInSMSModal } from '../components/promotional-double-opt-in-sms'
+import { PromotionalTextToSubscribeModal } from '../components/promotional-text-to-subscribe-modal'
 
 export default function MenuPage() {
-  const [textToSubscribeModalOpen, setTextToSubscribeModalOpen] =
+  const [
+    promotionalTextToSubscribeModalOpen,
+    setPromotionalTextToSubscribeModalOpen,
+  ] = useState(false)
+  const [promotionalDobleOptinModalOpen, setPromotionalDobleOptinModalOpen] =
     useState(false)
-  const [dobleOptinModalOpen, setDobleOptinModalOpen] = useState(false)
+  const [smsCouponCodePopupOpen, setSMSCouponCodePopupOpen] = useState(false)
+  const [emailCouponCodePopupOpen, setEmailCouponCodePopupOpen] =
+    useState(false)
 
   return (
     <div>
@@ -29,15 +35,9 @@ export default function MenuPage() {
           <div className="flex gap-4">
             <Link
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              href="/sign-up"
+              href="/log-in-collection-opt-in"
             >
-              Sign Up
-            </Link>
-            <Link
-              className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              href="#"
-            >
-              Collection Site
+              Log-in collection opt-in
             </Link>
           </div>
         </section>
@@ -47,39 +47,43 @@ export default function MenuPage() {
           <div className="flex gap-4">
             <button
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              onClick={() => setTextToSubscribeModalOpen(true)}
+              onClick={() => setSMSCouponCodePopupOpen(true)}
             >
-              Text to Subscribe Double Opt-In
+              Coupon Code promotional opt-in
             </button>
+            {/* <CouponCodePopup
+              collect={'sms'}
+              isOpen={smsCouponCodePopupOpen}
+              onClose={() => setSMSCouponCodePopupOpen(false)}
+            /> */}
 
-            <TextToSubscribeModal
-              isOpen={textToSubscribeModalOpen}
-              onClose={() => setTextToSubscribeModalOpen(false)}
+            <button
+              className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
+              onClick={() => setPromotionalDobleOptinModalOpen(true)}
+            >
+              Promotional double opt-in
+            </button>
+            <PromotionalDoubleOptInSMSModal
+              isOpen={promotionalDobleOptinModalOpen}
+              onClose={() => setPromotionalDobleOptinModalOpen(false)}
             />
 
             <button
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              onClick={() => setDobleOptinModalOpen(true)}
+              onClick={() => setPromotionalTextToSubscribeModalOpen(true)}
             >
-              Double Opt-in SMS Modal
+              Promotional text-to-subscribe
             </button>
-            <DoubleOptInSMSModal
-              isOpen={dobleOptinModalOpen}
-              onClose={() => setDobleOptinModalOpen(false)}
+            <PromotionalTextToSubscribeModal
+              isOpen={promotionalTextToSubscribeModalOpen}
+              onClose={() => setPromotionalTextToSubscribeModalOpen(false)}
             />
 
             <Link
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              href="#"
+              href="/promotional-text-to-subscribe-ad"
             >
-              Text to Subscribe Double Opt-in
-            </Link>
-
-            <Link
-              className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              href="/text-opt-in"
-            >
-              Text to Opt-in
+              Promotional text-to-subscribe via advertisement
             </Link>
           </div>
         </section>
@@ -87,17 +91,22 @@ export default function MenuPage() {
         <section className="flex flex-col">
           <h2 className="text-black mb-3 text-lg font-semibold">Email Only</h2>
           <div className="flex gap-4">
+            <button
+              className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
+              onClick={() => setEmailCouponCodePopupOpen(true)}
+            >
+              Coupone code promotional opt-in
+            </button>
+            {/* <CouponCodePopup
+              collect={'email'}
+              isOpen={emailCouponCodePopupOpen}
+              onClose={() => setEmailCouponCodePopupOpen(false)}
+            /> */}
             <Link
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
               href="#"
             >
-              Text to Opt-in
-            </Link>
-            <Link
-              className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              href="#"
-            >
-              Text to Opt-in
+              Newletter sign up
             </Link>
           </div>
         </section>

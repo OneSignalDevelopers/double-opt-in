@@ -1,14 +1,9 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
-import { OneSignalAppID } from '@/core/constants'
-import { safeTry } from '@/core/utils'
+import { CountryCodes, OneSignalAppID } from '../../core/constants'
+import { safeTry } from '../../core/utils'
 
-const COUNTRY_CODE: Record<string, string> = {
-  "CA": "+1",
-  "MX": "+52",
-  "US": "+1",
-}
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -18,8 +13,8 @@ export default function SignUpPage() {
   })
 
   const [formOptions, setFormOptions] = useState({
-    wants_marketing: true,
-    wants_promotions: true,
+    wants_marketing: false,
+    wants_promotions: false,
   })
 
   const handleChange = e => {
@@ -91,10 +86,13 @@ export default function SignUpPage() {
             <select
               name="country_code"
               className="border text-black border-gray-300 rounded-l-md text-sm p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              defaultValue="US"
             >
-              <option value="CA">🇨🇦 +1</option>
-              <option value="MX">🇲🇽 +52</option>
-              <option value="US">🇺🇸 +1</option>
+              {Object.entries(CountryCodes).map(([country, { code, flag }]) => (
+                <option key={country} value={country}>
+                  {flag} {code}
+                </option>
+              ))}
             </select>
             <input
               type="tel"
@@ -102,7 +100,7 @@ export default function SignUpPage() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              pattern="^\d{1,14}$"
+              pattern="^\+[1-9]\d{1,14}$"
               className="block w-full text-black px-3 py-2 border border-gray-300 rounded-r-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               placeholder="Your Phone Number"
             />
@@ -172,7 +170,7 @@ export default function SignUpPage() {
     formData.phone &&
       subscriptionsToCreate.push({
         type: 'SMS',
-        token: COUNTRY_CODE[formData.country] + formData.phone,
+        token: CountryCodes[formData.country] + formData.phone,
         enabled: true,
       })
     const [error, _result] = await safeTry(() =>
