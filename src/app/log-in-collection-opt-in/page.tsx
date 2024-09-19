@@ -1,7 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
-import { CountryCodes, OneSignalAppID } from '../../core/constants'
+import { CountryCodesOptions, OneSignalAppID } from '../../core/constants'
 import { safeTry } from '../../core/utils'
 
 export default function SignUpPage() {
@@ -88,11 +88,13 @@ export default function SignUpPage() {
               className="border text-black border-gray-300 rounded-l-md text-sm p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               defaultValue="US"
             >
-              {Object.entries(CountryCodes).map(([country, { code, flag }]) => (
-                <option key={country} value={country}>
-                  {flag} {code}
-                </option>
-              ))}
+              {Object.entries(CountryCodesOptions).map(
+                ([country, { code, flag }]) => (
+                  <option key={country} value={country}>
+                    {flag} {code}
+                  </option>
+                )
+              )}
             </select>
             <input
               type="tel"
@@ -170,7 +172,7 @@ export default function SignUpPage() {
     formData.phone &&
       subscriptionsToCreate.push({
         type: 'SMS',
-        token: CountryCodes[formData.country] + formData.phone,
+        token: CountryCodesOptions[formData.country] + formData.phone,
         enabled: true,
       })
     const [error, _result] = await safeTry(() =>

@@ -1,4 +1,6 @@
-export const safeTry = async fn => {
+export const safeTry = async <T>(
+  fn: () => Promise<T>
+): Promise<[Error | null, T | null]> => {
   try {
     const result = await fn()
     return [null, result]
@@ -11,6 +13,6 @@ export const safeTry = async fn => {
       console.error('An error occurred')
     }
 
-    return [e, null]
+    return [e instanceof Error ? e : new Error(String(e)), null]
   }
 }

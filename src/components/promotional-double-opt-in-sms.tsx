@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from 'react'
 import Image from 'next/image'
 import phone from '../../public/phone.svg'
-import { CountryCodes, OneSignalAppID } from '@/core/constants'
+import { CountryCodesOptions, OneSignalAppID } from '@/core/constants'
 import { safeTry } from '@/core/utils'
 
 interface Props {
@@ -19,18 +19,21 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
   onClose,
 }) => {
   const [currentStep, setCurrentStep] = useState<StepType>(StepType.collection)
-  const [selectedCountry, setSelectedCountry] = useState('')
+  const [selectedCountry, setSelectedCountry] = useState('US')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   if (!isOpen) return null
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value
-    setSelectedCountry(value)
+    const country = event.target.value
+    setSelectedCountry(country)
   }
 
-  const handlePhoneInputChange = e => {
-    const { value } = e.target
+  const handlePhoneInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.target
     setPhoneNumber(value)
   }
 
@@ -102,11 +105,12 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
               name="country_code"
               className="border text-black border-gray-300 rounded-l-md text-sm p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               onChange={handleSelectChange}
+              value={selectedCountry}
             >
-              {Object.entries(CountryCodes).map(([country, { code, flag }]) => {
+              {CountryCodesOptions.map(cc => {
                 return (
-                  <option key={country} value={country}>
-                    {flag} {code}
+                  <option key={cc.country} value={cc.country}>
+                    {cc.flag} {cc.code}
                   </option>
                 )
               })}
@@ -123,9 +127,12 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
           </div>
         </div>
 
+        <p>{errorMessage}</p>
+
         <button
           onClick={() => createSMSSubscription()}
-          className="cursor-pointer w-full bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4"
+          className="cursor-pointer w-full bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4 disabled:bg-blue-400"
+          disabled={!selectedCountry || !phoneNumber}
         >
           Get 20% off now
         </button>
@@ -168,7 +175,7 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
    */
   async function createSMSSubscription() {
     const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
-    const [error, result] = await safeTry(() =>
+    const [error, _] = await safeTry(() =>
       fetch(createUserAPI, {
         method: 'POST',
         mode: 'no-cors',
@@ -182,7 +189,9 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
           subscriptions: [
             {
               type: 'SMS',
-              token: CountryCodes.get(selectedCountry) + phoneNumber,
+              token:
+                CountryCodesOptions.find(x => x.country == selectedCountry)!
+                  .code + phoneNumber,
               enabled: true,
             },
           ],
@@ -190,8 +199,13 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
       })
     )
 
-    if (result.ok) {
+    if (error) {
+      setErrorMessage(error?.message)
+    } else {
       setCurrentStep(StepType.complete)
+      setErrorMessage('')
+      setPhoneNumber('')
+      setSelectedCountry('')
     }
   }
 }
