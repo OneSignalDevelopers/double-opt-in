@@ -1,9 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { OneSignalAppID } from '../../core/constants'
+import { safeTry } from '../../core/utils'
 
 export default function NewsletterSignupPage() {
   const [email, setEmail] = useState('')
+  const [subscriptionCreated, setsubscriptionCreated] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(false)
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -45,10 +49,13 @@ export default function NewsletterSignupPage() {
         {/* Sign Up Button */}
         <button
           className="w-full bg-blue-600 disabled:bg-blue-400 text-white font-medium py-3 rounded-md hover:bg-blue-700 transition"
-          disabled={!email}
+          disabled={!email || subscriptionCreated}
+          type="button"
+          onClick={onClick}
         >
-          Sign Up
+          {subscriptionCreated ? "You've been subscribed!" : 'Sign Up'}
         </button>
+        {errorMessage && <p>{errorMessage}</p>}
 
         {/* Marketing Agreement */}
         <p className="text-xs text-[#424D57] mt-4">
@@ -57,4 +64,36 @@ export default function NewsletterSignupPage() {
       </div>
     </div>
   )
+
+  async function onClick(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+
+    const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
+    const [error, _result] = await safeTry(() =>
+      fetch(createUserAPI, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({
+          properties: {
+            tags: {
+              wantsNewsletter: true,
+            },
+          },
+          subscriptions: [
+            {
+              type: 'Email',
+              token: email,
+              enabled: true,
+            },
+          ],
+        }),
+      })
+    )
+
+    if (error) {
+      console.error('Failed to create user')
+    } else {
+      setsubscriptionCreated(true)
+    }
+  }
 }
