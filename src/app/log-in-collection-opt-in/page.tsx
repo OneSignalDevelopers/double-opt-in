@@ -17,16 +17,16 @@ export default function SignUpPage() {
     wants_promotions: false,
   })
 
-  const handleChange = e => {
-    const { name, value } = e.target
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
     setFormData(prevData => ({
       ...prevData,
       [name]: value,
     }))
   }
 
-  const handleOptionChange = e => {
-    const { name } = e.target
+  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = event.target
     setFormOptions(prevData => ({
       ...prevData,
       [name]: !formOptions[name],
@@ -51,7 +51,7 @@ export default function SignUpPage() {
             id="name"
             name="name"
             value={formData.name}
-            onChange={handleChange}
+            onChange={handleInputChange}
             className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Your Name"
           />
@@ -69,7 +69,7 @@ export default function SignUpPage() {
             id="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={handleInputChange}
             className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Your Email"
           />
@@ -101,7 +101,7 @@ export default function SignUpPage() {
               id="phone"
               name="phone"
               value={formData.phone}
-              onChange={handleChange}
+              onChange={handleInputChange}
               pattern="^\+[1-9]\d{1,14}$"
               className="block w-full text-black px-3 py-2 border border-gray-300 rounded-r-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               placeholder="Your Phone Number"

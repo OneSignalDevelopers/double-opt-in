@@ -95,7 +95,7 @@ export default function MenuPage() {
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
               onClick={() => setEmailCouponCodePopupOpen(true)}
             >
-              Coupone code promotional opt-in
+              Coupon code promotional opt-in
             </button>
             {/* <CouponCodePopup
               collect={'email'}
@@ -104,9 +104,9 @@ export default function MenuPage() {
             /> */}
             <Link
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              href="#"
+              href="/newsletter-sign-up"
             >
-              Newletter sign up
+              Newsletter sign up
             </Link>
           </div>
         </section>
