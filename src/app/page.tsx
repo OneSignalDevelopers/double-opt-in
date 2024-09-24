@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { PromotionalDoubleOptInSMSModal } from '../components/promotional-double-opt-in-sms'
 import { PromotionalTextToSubscribeModal } from '../components/promotional-text-to-subscribe-modal'
+import { OneSignalAppID } from '@core/constants';
 
 export default function MenuPage() {
   const [
@@ -16,7 +17,7 @@ export default function MenuPage() {
   // const [emailCouponCodePopupOpen, setEmailCouponCodePopupOpen] =
   //   useState(false)
 
-  const [appId, setAppId] = useState("01922070-5a20-7334-9afc-56b197525618");
+  const [appId, setAppId] = useState(OneSignalAppID);
   const [isValidAppId, setIsValid] = useState(true);
   const validateAppId = (input: string) => {
     const uuidRegex =
@@ -124,6 +125,7 @@ export default function MenuPage() {
             <PromotionalDoubleOptInSMSModal
               isOpen={promotionalDobleOptinModalOpen}
               onClose={() => setPromotionalDobleOptinModalOpen(false)}
+              appId={appId}
             />
 
             <button
@@ -135,6 +137,7 @@ export default function MenuPage() {
             <PromotionalTextToSubscribeModal
               isOpen={promotionalTextToSubscribeModalOpen}
               onClose={() => setPromotionalTextToSubscribeModalOpen(false)}
+              phoneNumber={phoneNumber}
             />
 
             <Link
@@ -162,7 +165,7 @@ export default function MenuPage() {
             /> */}
             <Link
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
-              href="/newsletter-sign-up"
+              href={"/newsletter-sign-up?app_id=" + appId}
             >
               Newsletter sign up
             </Link>

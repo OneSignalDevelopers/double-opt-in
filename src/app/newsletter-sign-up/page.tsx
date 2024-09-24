@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { OneSignalAppID } from '@core/constants'
 import { safeTry } from '@core/utils'
+import { useSearchParams } from 'next/navigation';
 
 export default function NewsletterSignupPage() {
+  const appId = useSearchParams().get('appId') || OneSignalAppID;
   const [email, setEmail] = useState('')
   const [subscriptionCreated, setsubscriptionCreated] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -68,7 +70,7 @@ export default function NewsletterSignupPage() {
   async function onClick(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
 
-    const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
+    const createUserAPI = `https://api.onesignal.com/apps/${appId}/users`
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error , _result] = await safeTry(() =>
       fetch(createUserAPI, {

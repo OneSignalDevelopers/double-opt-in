@@ -1,12 +1,13 @@
 import { FunctionComponent, useState } from 'react'
 import Image from 'next/image'
 import phone from '../../public/phone.svg'
-import { CountryCodesOptions, OneSignalAppID } from '@core/constants'
+import { CountryCodesOptions } from '@core/constants'
 import { safeTry } from '@core/utils'
 
 interface Props {
   readonly isOpen: boolean
   readonly onClose: () => void
+  readonly appId: string
 }
 
 enum StepType {
@@ -17,7 +18,9 @@ enum StepType {
 export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
   isOpen,
   onClose,
+  appId
 }) => {
+
   const [currentStep, setCurrentStep] = useState<StepType>(StepType.collection)
   const [selectedCountry, setSelectedCountry] = useState('US')
   const [phoneNumber, setPhoneNumber] = useState('')
@@ -63,14 +66,14 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
 
           {/* Modal Content */}
           {currentStep == StepType.collection
-            ? renderCollectionForm()
+            ? renderCollectionForm(appId)
             : renderNextStep()}
         </div>
       </div>
     </div>
   )
 
-  function renderCollectionForm() {
+  function renderCollectionForm(appId: string) {
     return (
       <div className="flex flex-col items-start space-y-4">
         <img src="/onesignal-logo.png" alt="OneSignal" className="h-6 mb-2" />
@@ -130,7 +133,7 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
         <p>{errorMessage}</p>
 
         <button
-          onClick={() => createSMSSubscription()}
+          onClick={() => createSMSSubscription(appId)}
           className="cursor-pointer w-full bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4 disabled:bg-blue-400"
           disabled={!selectedCountry || !phoneNumber}
         >
@@ -173,8 +176,8 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
    * Relies on "Send message prompt" being enabled
    * in the dashboard
    */
-  async function createSMSSubscription() {
-    const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
+  async function createSMSSubscription(appId: string) {
+    const createUserAPI = `https://api.onesignal.com/apps/${appId}/users`
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, _result] = await safeTry(() =>
       fetch(createUserAPI, {
