@@ -175,7 +175,8 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
    */
   async function createSMSSubscription() {
     const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
-    const [error, _] = await safeTry(() =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [error, _result] = await safeTry(() =>
       fetch(createUserAPI, {
         method: 'POST',
         mode: 'no-cors',
