@@ -45,13 +45,13 @@ export default function MenuPage() {
         <section className="flex flex-col">
           <h2 className="text-black mb-3 text-lg font-semibold">SMS Only</h2>
           <div className="flex gap-4">
-            <button
+            {/* <button
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
               onClick={() => setSMSCouponCodePopupOpen(true)}
             >
               Coupon Code promotional opt-in
             </button>
-            {/* <CouponCodePopup
+            <CouponCodePopup
               collect={'sms'}
               isOpen={smsCouponCodePopupOpen}
               onClose={() => setSMSCouponCodePopupOpen(false)}
@@ -91,13 +91,13 @@ export default function MenuPage() {
         <section className="flex flex-col">
           <h2 className="text-black mb-3 text-lg font-semibold">Email Only</h2>
           <div className="flex gap-4">
-            <button
+            {/* <button
               className="bg-[#051B2C] text-white font-medium py-3 px-6 hover:bg-opacity-90 transition duration-200"
               onClick={() => setEmailCouponCodePopupOpen(true)}
             >
               Coupon code promotional opt-in
             </button>
-            {/* <CouponCodePopup
+            <CouponCodePopup
               collect={'email'}
               isOpen={emailCouponCodePopupOpen}
               onClose={() => setEmailCouponCodePopupOpen(false)}
