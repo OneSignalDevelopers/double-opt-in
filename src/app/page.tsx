@@ -12,9 +12,9 @@ export default function MenuPage() {
   ] = useState(false)
   const [promotionalDobleOptinModalOpen, setPromotionalDobleOptinModalOpen] =
     useState(false)
-  const [smsCouponCodePopupOpen, setSMSCouponCodePopupOpen] = useState(false)
-  const [emailCouponCodePopupOpen, setEmailCouponCodePopupOpen] =
-    useState(false)
+  // const [smsCouponCodePopupOpen, setSMSCouponCodePopupOpen] = useState(false)
+  // const [emailCouponCodePopupOpen, setEmailCouponCodePopupOpen] =
+  //   useState(false)
 
   return (
     <div>

@@ -7,7 +7,7 @@ import { safeTry } from '@core/utils'
 export default function NewsletterSignupPage() {
   const [email, setEmail] = useState('')
   const [subscriptionCreated, setsubscriptionCreated] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -55,7 +55,7 @@ export default function NewsletterSignupPage() {
         >
           {subscriptionCreated ? "You've been subscribed!" : 'Sign Up'}
         </button>
-        {errorMessage && <p>{errorMessage}</p>}
+        {!!errorMessage && <p>{errorMessage}</p>}
 
         {/* Marketing Agreement */}
         <p className="text-xs text-[#424D57] mt-4">
@@ -69,7 +69,8 @@ export default function NewsletterSignupPage() {
     event.preventDefault()
 
     const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
-    const [error, _result] = await safeTry(() =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [error , _result] = await safeTry(() =>
       fetch(createUserAPI, {
         method: 'POST',
         mode: 'no-cors',
@@ -89,11 +90,12 @@ export default function NewsletterSignupPage() {
         }),
       })
     )
-
     if (error) {
       console.error('Failed to create user')
+      setErrorMessage(error.message);
     } else {
       setsubscriptionCreated(true)
+      setErrorMessage('');
     }
   }
 }
