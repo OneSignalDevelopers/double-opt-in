@@ -1,15 +1,9 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
-<<<<<<< HEAD:src/app/log-in-collection-opt-in/page.tsx
-import { CountryCodesOptions, OneSignalAppID } from '../../core/constants'
-import { safeTry } from '../../core/utils'
-=======
-import { OneSignalAppID } from '@/core/constants'
+import { CountryCodesOptions, OneSignalAppID } from '@/core/constants'
 import { safeTry } from '@/core/utils'
 import { useSearchParams } from 'next/navigation'
-
->>>>>>> main:src/app/sign-up/page.tsx
 
 export default function SignUpPage() {
   const searchParams = useSearchParams()
@@ -26,26 +20,16 @@ export default function SignUpPage() {
     wants_promotions: false,
   })
 
-<<<<<<< HEAD:src/app/log-in-collection-opt-in/page.tsx
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
-=======
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
->>>>>>> main:src/app/sign-up/page.tsx
     setFormData(prevData => ({
       ...prevData,
       [name]: value,
     }))
   }
 
-<<<<<<< HEAD:src/app/log-in-collection-opt-in/page.tsx
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = event.target
-=======
-  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.target
->>>>>>> main:src/app/sign-up/page.tsx
     setFormOptions(prevData => ({
       ...prevData,
       [name]: !prevData[name as keyof typeof formOptions],
@@ -192,7 +176,10 @@ export default function SignUpPage() {
     formData.phone &&
       subscriptionsToCreate.push({
         type: 'SMS',
-        token: CountryCodesOptions[formData.country] + formData.phone,
+        token:
+          CountryCodesOptions[
+            formData.country as keyof typeof CountryCodesOptions
+          ] + formData.phone,
         enabled: true,
       })
     const [error] = await safeTry(() =>
