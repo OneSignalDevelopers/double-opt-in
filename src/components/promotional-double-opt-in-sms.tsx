@@ -1,8 +1,8 @@
 import { FunctionComponent, useState } from 'react'
 import Image from 'next/image'
 import phone from '../../public/phone.svg'
-import { CountryCodesOptions, OneSignalAppID } from '@/core/constants'
-import { safeTry } from '@/core/utils'
+import { CountryCodesOptions, OneSignalAppID } from '@core/constants'
+import { safeTry } from '@core/utils'
 
 interface Props {
   readonly isOpen: boolean
@@ -107,7 +107,7 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
               onChange={handleSelectChange}
               value={selectedCountry}
             >
-              {CountryCodesOptions.map(cc => {
+              {CountryCodesOptions.map((cc) => {
                 return (
                   <option key={cc.country} value={cc.country}>
                     {cc.flag} {cc.code}
@@ -190,7 +190,7 @@ export const PromotionalDoubleOptInSMSModal: FunctionComponent<Props> = ({
             {
               type: 'SMS',
               token:
-                CountryCodesOptions.find(x => x.country == selectedCountry)!
+                CountryCodesOptions.find((x) => x.country == selectedCountry)!
                   .code + phoneNumber,
               enabled: true,
             },

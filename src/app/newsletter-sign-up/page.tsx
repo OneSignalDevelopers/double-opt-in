@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { OneSignalAppID } from '../../core/constants'
-import { safeTry } from '../../core/utils'
+import { OneSignalAppID } from '@core/constants'
+import { safeTry } from '@core/utils'
 
 export default function NewsletterSignupPage() {
   const [email, setEmail] = useState('')

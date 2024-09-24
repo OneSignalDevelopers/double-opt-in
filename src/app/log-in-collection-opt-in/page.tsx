@@ -1,8 +1,8 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
-import { CountryCodesOptions, OneSignalAppID } from '@/core/constants'
-import { safeTry } from '@/core/utils'
+import { CountryCodesOptions, OneSignalAppID } from '@core/constants'
+import { safeTry } from '@core/utils'
 import { useSearchParams } from 'next/navigation'
 
 export default function SignUpPage() {
@@ -20,7 +20,7 @@ export default function SignUpPage() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }))
@@ -28,7 +28,7 @@ export default function SignUpPage() {
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = event.target
-    setFormOptions(prevData => ({
+    setFormOptions((prevData) => ({
       ...prevData,
       [name]: !prevData[name as keyof typeof formOptions],
     }))
