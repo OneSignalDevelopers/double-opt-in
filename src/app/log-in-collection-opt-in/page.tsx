@@ -7,14 +7,12 @@ import { useSearchParams } from 'next/navigation'
 
 export default function SignUpPage() {
   const searchParams = useSearchParams()
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     country: 'US',
   })
-
   const [formOptions, setFormOptions] = useState({
     wants_marketing: false,
     wants_promotions: false,
