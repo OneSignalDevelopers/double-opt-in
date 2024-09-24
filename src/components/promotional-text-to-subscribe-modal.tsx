@@ -6,15 +6,16 @@ import { FunctionComponent } from 'react'
 interface Props {
   readonly isOpen: boolean
   readonly onClose: () => void
+  readonly phoneNumber: string
 }
 
 export const PromotionalTextToSubscribeModal: FunctionComponent<Props> = ({
   isOpen,
   onClose,
+  phoneNumber,
 }) => {
   if (!isOpen) return null
 
-  const optInNumber = '+12345678901'
   const message =
     'Fat Squirrel: Reply Y to subscribe to get 20% off. Reply HELP for help and STOP to cancel. Msg frequency varies. Msg & data rates may apply. View Terms & Privacy: https://fatsquirrel.ostc.tv/12i3sf'
 
@@ -72,7 +73,7 @@ export const PromotionalTextToSubscribeModal: FunctionComponent<Props> = ({
 
               <button className="w-full bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4">
                 <a
-                  href={`sms://${optInNumber}?body=${encodeURIComponent(
+                  href={`sms://${phoneNumber}?body=${encodeURIComponent(
                     message
                   )}`}
                 >

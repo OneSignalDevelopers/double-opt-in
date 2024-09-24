@@ -1,9 +1,9 @@
 'use client'
 
-import { FormEvent, useState, Suspense } from 'react'
+import { FormEvent, Suspense, useState } from 'react'
 import { CountryCodesOptions, OneSignalAppID } from '@core/constants'
-import { safeTry } from '@core/utils'
 import { useSearchParams } from 'next/navigation'
+import { safeTry } from '@core/utils';
 
 export default function SignUpPage() {
   return (
@@ -23,6 +23,8 @@ function SignUpForm() {
     phone: '',
     country: 'US',
   })
+
+  const [submited, setSubmited] = useState(false);
   const [formOptions, setFormOptions] = useState({
     wants_marketing: false,
     wants_promotions: false,
@@ -127,7 +129,7 @@ function SignUpForm() {
             name="wants_marketing"
             onChange={handleOptionChange}
             checked={formOptions.wants_marketing}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            className="flex-none h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
           <label htmlFor="marketing" className="ml-2 text-sm text-[#424D57]">
             I agree to receive marketing emails
@@ -141,7 +143,7 @@ function SignUpForm() {
             name="wants_promotions"
             onChange={handleOptionChange}
             checked={formOptions.wants_promotions}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            className="flex-none h-4 w-4  text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
           <label htmlFor="promotions" className="ml-2 text-sm text-[#424D57]">
             I agree to receive automated promotional messages from [Company
@@ -155,12 +157,16 @@ function SignUpForm() {
           </label>
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          Sign Up
-        </button>
+        {
+          submited ? (
+            <h1 className="text-center text-xl font-semibold text-[#051B2C] mb-2">Thanks for Signing Up!</h1>
+          ) : (  <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Sign Up
+          </button>)
+        }
       </form>
     </div>
   )
@@ -211,6 +217,7 @@ function SignUpForm() {
     if (error) {
       console.error('Failed to create user')
     } else {
+      setSubmited(true)
       console.log('User created successfully')
     }
   }

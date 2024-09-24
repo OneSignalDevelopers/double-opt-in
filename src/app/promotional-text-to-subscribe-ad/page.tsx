@@ -1,4 +1,10 @@
+'use client'
+
+
+import { useSearchParams } from "next/navigation"
+
 export default function TextToOptInPage() {
+  const phone_number = useSearchParams().get('phone_number') || '77805'
   return (
     <div className="flex flex-col w-1/2 text-lg text-[#424D57]">
       <h1 className="text-4xl font-semibold text-[#051B2C] mb-2">
@@ -9,7 +15,7 @@ export default function TextToOptInPage() {
       </p>
       <p className="mb-6">
         Text <span className="font-extrabold">ONESIGNAL</span> to{' '}
-        <span className="font-extrabold">77805</span> to never miss a drop!
+        <span className="font-extrabold">{phone_number}</span> to never miss a drop!
       </p>
       <p className="mb-6">
         By signing up via text, you agree to receive recurring automated
