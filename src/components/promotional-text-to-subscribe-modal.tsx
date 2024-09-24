@@ -8,7 +8,7 @@ interface Props {
   readonly onClose: () => void
 }
 
-export const TextToSubscribeModal: FunctionComponent<Props> = ({
+export const PromotionalTextToSubscribeModal: FunctionComponent<Props> = ({
   isOpen,
   onClose,
 }) => {

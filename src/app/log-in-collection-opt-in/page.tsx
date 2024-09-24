@@ -1,41 +1,33 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
-import { OneSignalAppID } from '@/core/constants'
+import { CountryCodesOptions, OneSignalAppID } from '@/core/constants'
 import { safeTry } from '@/core/utils'
 import { useSearchParams } from 'next/navigation'
 
-
-const COUNTRY_CODE: Record<string, string> = {
-  "CA": "+1",
-  "MX": "+52",
-  "US": "+1",
-}
 export default function SignUpPage() {
   const searchParams = useSearchParams()
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     country: 'US',
   })
-
   const [formOptions, setFormOptions] = useState({
-    wants_marketing: true,
-    wants_promotions: true,
+    wants_marketing: false,
+    wants_promotions: false,
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
     setFormData(prevData => ({
       ...prevData,
       [name]: value,
     }))
   }
 
-  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.target
+  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = event.target
     setFormOptions(prevData => ({
       ...prevData,
       [name]: !prevData[name as keyof typeof formOptions],
@@ -60,7 +52,7 @@ export default function SignUpPage() {
             id="name"
             name="name"
             value={formData.name}
-            onChange={handleChange}
+            onChange={handleInputChange}
             className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Your Name"
           />
@@ -78,7 +70,7 @@ export default function SignUpPage() {
             id="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={handleInputChange}
             className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Your Email"
           />
@@ -95,18 +87,23 @@ export default function SignUpPage() {
             <select
               name="country_code"
               className="border text-black border-gray-300 rounded-l-md text-sm p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              defaultValue="US"
             >
-              <option value="CA">🇨🇦 +1</option>
-              <option value="MX">🇲🇽 +52</option>
-              <option value="US">🇺🇸 +1</option>
+              {Object.entries(CountryCodesOptions).map(
+                ([country, { code, flag }]) => (
+                  <option key={country} value={country}>
+                    {flag} {code}
+                  </option>
+                )
+              )}
             </select>
             <input
               type="tel"
               id="phone"
               name="phone"
               value={formData.phone}
-              onChange={handleChange}
-              pattern="^\d{1,14}$"
+              onChange={handleInputChange}
+              pattern="^\+[1-9]\d{1,14}$"
               className="block w-full text-black px-3 py-2 border border-gray-300 rounded-r-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               placeholder="Your Phone Number"
             />
@@ -177,7 +174,10 @@ export default function SignUpPage() {
     formData.phone &&
       subscriptionsToCreate.push({
         type: 'SMS',
-        token: COUNTRY_CODE[formData.country] + formData.phone,
+        token:
+          CountryCodesOptions[
+            formData.country as keyof typeof CountryCodesOptions
+          ] + formData.phone,
         enabled: true,
       })
     const [error] = await safeTry(() =>
