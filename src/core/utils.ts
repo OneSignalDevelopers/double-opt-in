@@ -3,7 +3,12 @@ export const safeTry = async <T>(
 ): Promise<[Error | null, T | null]> => {
   try {
     const result = await fn()
-    return [null, result]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((result as any).ok) {
+      return [null, result]
+    } else {
+      return [new Error("Did not get back a successful response from OneSignal API"), null]
+    }
   } catch (e) {
     if (e instanceof Error) {
       console.error(e.message)
