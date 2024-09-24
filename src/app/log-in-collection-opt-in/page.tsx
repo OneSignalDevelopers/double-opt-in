@@ -1,10 +1,19 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+<<<<<<< HEAD:src/app/log-in-collection-opt-in/page.tsx
 import { CountryCodesOptions, OneSignalAppID } from '../../core/constants'
 import { safeTry } from '../../core/utils'
+=======
+import { OneSignalAppID } from '@/core/constants'
+import { safeTry } from '@/core/utils'
+import { useSearchParams } from 'next/navigation'
+
+>>>>>>> main:src/app/sign-up/page.tsx
 
 export default function SignUpPage() {
+  const searchParams = useSearchParams()
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,19 +26,29 @@ export default function SignUpPage() {
     wants_promotions: false,
   })
 
+<<<<<<< HEAD:src/app/log-in-collection-opt-in/page.tsx
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
+=======
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+>>>>>>> main:src/app/sign-up/page.tsx
     setFormData(prevData => ({
       ...prevData,
       [name]: value,
     }))
   }
 
+<<<<<<< HEAD:src/app/log-in-collection-opt-in/page.tsx
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = event.target
+=======
+  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = e.target
+>>>>>>> main:src/app/sign-up/page.tsx
     setFormOptions(prevData => ({
       ...prevData,
-      [name]: !formOptions[name],
+      [name]: !prevData[name as keyof typeof formOptions],
     }))
   }
 
@@ -156,8 +175,9 @@ export default function SignUpPage() {
 
   async function submitForm(event: FormEvent) {
     event.preventDefault()
-
-    const createUserAPI = `https://api.onesignal.com/apps/${OneSignalAppID}/users`
+    // Use the app_id query parameter if it exists, otherwise use the default OneSignalAppID
+    const appId = searchParams.get('app_id') || OneSignalAppID
+    const createUserAPI = `https://api.onesignal.com/apps/${appId}/users`
     const subscriptionsToCreate: Array<{
       type: string
       token: string
@@ -175,7 +195,7 @@ export default function SignUpPage() {
         token: CountryCodesOptions[formData.country] + formData.phone,
         enabled: true,
       })
-    const [error, _result] = await safeTry(() =>
+    const [error] = await safeTry(() =>
       fetch(createUserAPI, {
         method: 'POST',
         mode: 'no-cors',
