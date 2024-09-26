@@ -191,9 +191,8 @@ function SignUpForm() {
       subscriptionsToCreate.push({
         type: 'SMS',
         token:
-          CountryCodesOptions[
-            formData.country as keyof typeof CountryCodesOptions
-          ] + formData.phone,
+          CountryCodesOptions.find((cc) => cc.country === formData.country)!.code
+          + formData.phone,
         enabled: true,
       })
     const [error] = await safeTry(() =>
