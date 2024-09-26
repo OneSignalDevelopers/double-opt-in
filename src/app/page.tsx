@@ -21,7 +21,7 @@ export default function MenuPage() {
   const [isValidAppId, setIsValid] = useState(true);
   const validateAppId = (input: string) => {
     const uuidRegex =
-      /^[0-9A-F]{8}-[0-9A-F]{4}-7[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;;
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
     return uuidRegex.test(input);
   };
 
