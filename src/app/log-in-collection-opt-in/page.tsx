@@ -115,7 +115,7 @@ function SignUpForm() {
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              pattern="^\+[1-9]\d{1,14}$"
+              pattern="^\d{1,14}$"
               className="block w-full text-black px-3 py-2 border border-gray-300 rounded-r-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               placeholder="Your Phone Number"
             />

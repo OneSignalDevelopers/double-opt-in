@@ -6,7 +6,7 @@ interface CountyCode {
   readonly flag: string
 }
 export const CountryCodesOptions: ReadonlyArray<CountyCode> = [
+  { country: 'US', code: '+1', flag: '🇺🇸' },
   { country: 'CA', code: '+1', flag: '🇨🇦' },
   { country: 'MX', code: '+52', flag: '🇲🇽' },
-  { country: 'US', code: '+1', flag: '🇺🇸' },
 ]
