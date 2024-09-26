@@ -1,11 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { OneSignalAppID } from '@core/constants'
 import { safeTry } from '@core/utils'
 import { useSearchParams } from 'next/navigation';
 
-export default function NewsletterSignupPage() {
+
+export default function  NewsletterSignupPage() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <NewsletterSignup />
+      </Suspense>
+    </div>
+  );
+};
+
+function NewsletterSignup() {
   const appId = useSearchParams().get('appId') || OneSignalAppID;
   const [email, setEmail] = useState('')
   const [subscriptionCreated, setsubscriptionCreated] = useState(false)

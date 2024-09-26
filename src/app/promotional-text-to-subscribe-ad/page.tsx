@@ -2,8 +2,19 @@
 
 
 import { useSearchParams } from "next/navigation"
+import { Suspense } from "react";
 
 export default function TextToOptInPage() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <TextToOptIn />
+      </Suspense>
+    </div>
+  );
+};
+
+function TextToOptIn() {
   const phone_number = useSearchParams().get('phone_number') || '77805'
   return (
     <div className="flex flex-col w-1/2 text-lg text-[#424D57]">
